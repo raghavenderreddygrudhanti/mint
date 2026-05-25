@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd">
+	<flow name="subscribe-salesforce-cdc" doc:id="dbdcc4af-1f04-4fc4-8cb9-f159e3710aa4" >
+		<salesforce:replay-channel-listener doc:name="Subscribe to Contact Change Event" doc:id="1af6b0cd-da14-409a-9be8-5ce3eeaf413e" config-ref="Salesforce_Config" streamingChannel="/data/ContactChangeEvent" replayOption="FROM_LAST_REPLAY_ID" autoReplay="true"/>
+		<logger level="INFO" doc:name="Log Change Event Structure" doc:id="1064ba04-1f96-4bde-8fa8-395925202996" message="#[%dw 2.0&#10;output application/json&#10;---&#10;payload.data.payload]"/>
+	</flow>
+</mule>

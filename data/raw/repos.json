@@ -1,0 +1,702 @@
+[
+  {
+    "full_name": "stn1slv/awesome-integration",
+    "url": "https://github.com/stn1slv/awesome-integration",
+    "stars": 531,
+    "language": "Markdown",
+    "description": "A curated list of awesome system integration software and resources."
+  },
+  {
+    "full_name": "michaelachrisco/Electronic-Interchange-Github-Resources",
+    "url": "https://github.com/michaelachrisco/Electronic-Interchange-Github-Resources",
+    "stars": 350,
+    "language": null,
+    "description": "List of EDI (Mostly) Github Resources"
+  },
+  {
+    "full_name": "yesinteractive/dadjokes",
+    "url": "https://github.com/yesinteractive/dadjokes",
+    "stars": 109,
+    "language": "PHP",
+    "description": "Dadjokes.online: Microservice echo-service as an alternative to httpbin  for testing k8s, docker, kong, istio, kuma, etc.  Built on FSL php microframework. Who says testing and dev ops can't be fun?"
+  },
+  {
+    "full_name": "tom-smith-okta/okta-api-center",
+    "url": "https://github.com/tom-smith-okta/okta-api-center",
+    "stars": 76,
+    "language": "HTML",
+    "description": "Get up and running quickly with Okta's OAuth as a Service and your favorite API Gateway."
+  },
+  {
+    "full_name": "emoran/mulesoft-recipes",
+    "url": "https://github.com/emoran/mulesoft-recipes",
+    "stars": 70,
+    "language": "HTML",
+    "description": "Mulesoft recipes allows engineers to pick samples from multiple connectors and scripts and use them in their own projects"
+  },
+  {
+    "full_name": "fissehab/MuleSoft",
+    "url": "https://github.com/fissehab/MuleSoft",
+    "stars": 68,
+    "language": "Jupyter Notebook",
+    "description": "This repository contains code used for my MuleSoft Developer course and my YouTube MuleSoft tutorials."
+  },
+  {
+    "full_name": "estebanwasinger/dataweave-playground",
+    "url": "https://github.com/estebanwasinger/dataweave-playground",
+    "stars": 46,
+    "language": "Java",
+    "description": "DataWeave Language Open Source Playground"
+  },
+  {
+    "full_name": "venkatapgummadi/agentflow",
+    "url": "https://github.com/venkatapgummadi/agentflow",
+    "stars": 36,
+    "language": "Python",
+    "description": "Online-adaptive multi-agent framework for enterprise API orchestration. Adaptive circuit breakers, SLA-driven routing, hybrid LLM+rule intent parser. Apache 2.0."
+  },
+  {
+    "full_name": "avioconsulting/mule-opentelemetry-module",
+    "url": "https://github.com/avioconsulting/mule-opentelemetry-module",
+    "stars": 31,
+    "language": "Java",
+    "description": "Mule Extension to generate OpenTelemetry traces and metrics"
+  },
+  {
+    "full_name": "salesforce/terraform-provider-anypoint",
+    "url": "https://github.com/salesforce/terraform-provider-anypoint",
+    "stars": 25,
+    "language": "Go",
+    "description": "The official Terraform Provider for Mulesoft Anypoint Platform "
+  },
+  {
+    "full_name": "shakarbisetty/mulesoft-cookbook",
+    "url": "https://github.com/shakarbisetty/mulesoft-cookbook",
+    "stars": 23,
+    "language": "DataWeave",
+    "description": "Practical MuleSoft recipes \u2014 100+ DataWeave patterns, AI agent integration, CI/CD pipelines, migration guides, and more."
+  },
+  {
+    "full_name": "alexandramartinez/datacloud-mulesoft-integration",
+    "url": "https://github.com/alexandramartinez/datacloud-mulesoft-integration",
+    "stars": 23,
+    "language": "RAML",
+    "description": "This is a Mule 4 app created to communicate with your Data Cloud. You can query, insert, or delete records using this integration; as well as flatten a YAML schema for your Salesforce settings."
+  },
+  {
+    "full_name": "manikmagar/mule4-examples",
+    "url": "https://github.com/manikmagar/mule4-examples",
+    "stars": 20,
+    "language": "DataWeave",
+    "description": "This repository holds various examples using Mule ESB 4 Runtime."
+  },
+  {
+    "full_name": "michaelhyatt/elastic-apm-mule3-agent",
+    "url": "https://github.com/michaelhyatt/elastic-apm-mule3-agent",
+    "stars": 18,
+    "language": "Java",
+    "description": "Elastic APM agent for Mule 3.x"
+  },
+  {
+    "full_name": "mulesoft-developers/getting-started-hello-mule",
+    "url": "https://github.com/mulesoft-developers/getting-started-hello-mule",
+    "stars": 17,
+    "language": null,
+    "description": "This tutorial will walk you through step by step how to develop, test, and deploy your first Mule Application in just a few minutes!"
+  },
+  {
+    "full_name": "avioconsulting/mule-linter",
+    "url": "https://github.com/avioconsulting/mule-linter",
+    "stars": 16,
+    "language": "Groovy",
+    "description": "Mule Linter Tool"
+  },
+  {
+    "full_name": "crazyantlabs/sftptogo-examples",
+    "url": "https://github.com/crazyantlabs/sftptogo-examples",
+    "stars": 13,
+    "language": "Python",
+    "description": "Demo code and applications to connect and interact with SFTP To Go"
+  },
+  {
+    "full_name": "shyamrajprasad/dataweave-fun",
+    "url": "https://github.com/shyamrajprasad/dataweave-fun",
+    "stars": 12,
+    "language": "DataWeave",
+    "description": "DataWeave Learning with examples"
+  },
+  {
+    "full_name": "agiledigital/mule-preview-browser-extension",
+    "url": "https://github.com/agiledigital/mule-preview-browser-extension",
+    "stars": 10,
+    "language": "TypeScript",
+    "description": "Overlay a visual diff of Mule XML in Bitbucket Server"
+  },
+  {
+    "full_name": "cazala/synaptic-workshop",
+    "url": "https://github.com/cazala/synaptic-workshop",
+    "stars": 8,
+    "language": "JavaScript",
+    "description": "Synaptic workshop for MuleSoft's MeetUp 2017"
+  },
+  {
+    "full_name": "infracloudio/mule-k8s",
+    "url": "https://github.com/infracloudio/mule-k8s",
+    "stars": 7,
+    "language": "JavaScript",
+    "description": "Mulesoft demo on K8S"
+  },
+  {
+    "full_name": "manikmagar/mule-battlesnake-starter",
+    "url": "https://github.com/manikmagar/mule-battlesnake-starter",
+    "stars": 7,
+    "language": "RAML",
+    "description": "Mule Battlesnake. See https://docs.battlesnake.com/ for game details."
+  },
+  {
+    "full_name": "michaelhyatt/elastic-cloudhub-observability",
+    "url": "https://github.com/michaelhyatt/elastic-cloudhub-observability",
+    "stars": 7,
+    "language": null,
+    "description": "Experiments with observability of Mule components and APIs deployed into CloudHub using Elastic stack."
+  },
+  {
+    "full_name": "oscarmtzo/Mulesoft_Training_Fundamentals_Self_paced",
+    "url": "https://github.com/oscarmtzo/Mulesoft_Training_Fundamentals_Self_paced",
+    "stars": 7,
+    "language": "RAML",
+    "description": "This repo serves as a notebook for notes and excercises, as well as a guide self made from the Anypoint Platform Development: Fundamentals "
+  },
+  {
+    "full_name": "ICornwell/dweeve",
+    "url": "https://github.com/ICornwell/dweeve",
+    "stars": 7,
+    "language": "JavaScript",
+    "description": "dweeve is a Dataweave(ish) javascript things"
+  },
+  {
+    "full_name": "UFGInsurance/mulint",
+    "url": "https://github.com/UFGInsurance/mulint",
+    "stars": 6,
+    "language": "JavaScript",
+    "description": "Mule project linter"
+  },
+  {
+    "full_name": "deejay-hub/openai-data-loss-prevention",
+    "url": "https://github.com/deejay-hub/openai-data-loss-prevention",
+    "stars": 6,
+    "language": "Rust",
+    "description": "Flex gateway policy that uses Microsoft Presidio to check for sensitive data in the request"
+  },
+  {
+    "full_name": "mulesoft-developers/secure-properties-before-deployment",
+    "url": "https://github.com/mulesoft-developers/secure-properties-before-deployment",
+    "stars": 5,
+    "language": null,
+    "description": "In this tutorial, we are going to learn how to create secure properties files to store sensitive information such as keys, tokens, or passwords."
+  },
+  {
+    "full_name": "integrationanarchy/mulesoft",
+    "url": "https://github.com/integrationanarchy/mulesoft",
+    "stars": 5,
+    "language": "RAML",
+    "description": "Find all the required artifacts for the mulesoft learning purpose"
+  },
+  {
+    "full_name": "emoran/vscode-anypoint-monitor",
+    "url": "https://github.com/emoran/vscode-anypoint-monitor",
+    "stars": 5,
+    "language": "TypeScript",
+    "description": "This is Anypoint Monitoring VSCode extension! It allows to consume Anypoint API's and make relevant information available in the form of WebViews from the Platform and the deployed applications"
+  },
+  {
+    "full_name": "holymind84/mulesoft-dashboard",
+    "url": "https://github.com/holymind84/mulesoft-dashboard",
+    "stars": 5,
+    "language": "JavaScript",
+    "description": "A comprehensive monitoring solution for Mulesoft Applications and other metrics."
+  },
+  {
+    "full_name": "mulesoft-developers/salesforce-change-data-capture",
+    "url": "https://github.com/mulesoft-developers/salesforce-change-data-capture",
+    "stars": 5,
+    "language": null,
+    "description": "Learn how to subscribe to Salesforce CDC events in real-time and look at the message payload"
+  },
+  {
+    "full_name": "sandiindia/mule-awssm-extension",
+    "url": "https://github.com/sandiindia/mule-awssm-extension",
+    "stars": 5,
+    "language": "Java",
+    "description": "Mule 4 extension for AWS Secrets Manager"
+  },
+  {
+    "full_name": "gitsalesforce/MulesoftTrain",
+    "url": "https://github.com/gitsalesforce/MulesoftTrain",
+    "stars": 5,
+    "language": "RAML",
+    "description": "Mulesoft Training Solutions "
+  },
+  {
+    "full_name": "Akash-Peace/MULESOFT",
+    "url": "https://github.com/Akash-Peace/MULESOFT",
+    "stars": 5,
+    "language": "DataWeave",
+    "description": "Book My Show is the Mulesoft based project."
+  },
+  {
+    "full_name": "anoop-rk/mule-integration",
+    "url": "https://github.com/anoop-rk/mule-integration",
+    "stars": 4,
+    "language": null,
+    "description": "Useful links for Mule Integrations specifically to Mulesoft's Integration Solutions course"
+  },
+  {
+    "full_name": "ProstDev/mulesoft-community-theme",
+    "url": "https://github.com/ProstDev/mulesoft-community-theme",
+    "stars": 4,
+    "language": null,
+    "description": "Unofficial theme created and maintained by the community."
+  },
+  {
+    "full_name": "cijujoseph/alfresco-devcon-2018-cijuj",
+    "url": "https://github.com/cijujoseph/alfresco-devcon-2018-cijuj",
+    "stars": 3,
+    "language": "TypeScript",
+    "description": "Repository to host my talk contents for Alfresco DevCon 2018"
+  },
+  {
+    "full_name": "skommaSFDC/mule-cors-policy",
+    "url": "https://github.com/skommaSFDC/mule-cors-policy",
+    "stars": 3,
+    "language": null,
+    "description": "CORS interceptor on Mule API http listener"
+  },
+  {
+    "full_name": "MuleSoft-Forge/mule-idp-connector",
+    "url": "https://github.com/MuleSoft-Forge/mule-idp-connector",
+    "stars": 3,
+    "language": "Java",
+    "description": "MuleSoft Intelligent Document Processing (IDP) Anypoint Connector"
+  },
+  {
+    "full_name": "josedagama/mulesoft-exchange-upload",
+    "url": "https://github.com/josedagama/mulesoft-exchange-upload",
+    "stars": 3,
+    "language": "Shell",
+    "description": "GitHub Action to deploy Assets to MuleSoft Anypoint Exchange"
+  },
+  {
+    "full_name": "SamyTb/mule-oas-3-template",
+    "url": "https://github.com/SamyTb/mule-oas-3-template",
+    "stars": 3,
+    "language": null,
+    "description": "This repository shares a Mulesoft OAS 3 template that includes data types, security schemes and a validation ruleset"
+  },
+  {
+    "full_name": "mariocairone/docker-mule-ee",
+    "url": "https://github.com/mariocairone/docker-mule-ee",
+    "stars": 3,
+    "language": "Dockerfile",
+    "description": "Dockerfile to build Mule EE Docker images"
+  },
+  {
+    "full_name": "alexandramartinez/my-process-api-munits",
+    "url": "https://github.com/alexandramartinez/my-process-api-munits",
+    "stars": 2,
+    "language": "DataWeave",
+    "description": "Mule application making use of Anypoint MQ and demonstrating how to use MUnit to create significant tests for different scenarios. Using spy, verify call, assertions, mock, and more."
+  },
+  {
+    "full_name": "Avinava/mule-lint",
+    "url": "https://github.com/Avinava/mule-lint",
+    "stars": 2,
+    "language": "TypeScript",
+    "description": "Modern static analysis tool for MuleSoft applications with comprehensive reporting (HTML, CSV, SARIF) and CI/CD integration"
+  },
+  {
+    "full_name": "skommaSFDC/mule-https-one-way-and-two-way-ssl",
+    "url": "https://github.com/skommaSFDC/mule-https-one-way-and-two-way-ssl",
+    "stars": 2,
+    "language": null,
+    "description": "Securing Mule APIs - HTTPS Listener & HTTPS Request with One-way and Two-way SSL"
+  },
+  {
+    "full_name": "Axway/agents-mulesoft",
+    "url": "https://github.com/Axway/agents-mulesoft",
+    "stars": 2,
+    "language": "Go",
+    "description": "Agents for connecting Mulesoft to Axway Amplify Central"
+  },
+  {
+    "full_name": "alexandramartinez/acb-basic-munits",
+    "url": "https://github.com/alexandramartinez/acb-basic-munits",
+    "stars": 2,
+    "language": null,
+    "description": "Example Mule project with two MUnit test suites and 5 tests - 1 that fails on purpose."
+  },
+  {
+    "full_name": "AmericaSCORESBayArea/salesforce-data-api",
+    "url": "https://github.com/AmericaSCORESBayArea/salesforce-data-api",
+    "stars": 2,
+    "language": "DataWeave",
+    "description": "This project is based on Mulesoft Dataweave and Salesforce to provide secure, reliable, API access for all the Scores apps and projects. It is hosted on Anypoint and acts as the transactional hub, in concert with the authentication API"
+  },
+  {
+    "full_name": "deejay-hub/openai-api-key-mgmt",
+    "url": "https://github.com/deejay-hub/openai-api-key-mgmt",
+    "stars": 2,
+    "language": "Makefile",
+    "description": "Flex gateway policy to add OpenAI Key into header"
+  },
+  {
+    "full_name": "CristianoFIlho/Dataweave-Series-for-Practice-Interview",
+    "url": "https://github.com/CristianoFIlho/Dataweave-Series-for-Practice-Interview",
+    "stars": 2,
+    "language": null,
+    "description": "Dataweave Series for Practice & Interview - Practice Dataweave here :- Dataweave Playground  Important Note:- First Copy Input, Output, DW Code & Use Json Online Validator, to format the JSON, since medium changes the JSON."
+  },
+  {
+    "full_name": "victorbahl/mulequiz",
+    "url": "https://github.com/victorbahl/mulequiz",
+    "stars": 2,
+    "language": "HTML",
+    "description": "MuleQuiz allows you to play with your friends / colleagues and improve your knowledge about MuleSoft."
+  },
+  {
+    "full_name": "prince-cmd/prince.me",
+    "url": "https://github.com/prince-cmd/prince.me",
+    "stars": 2,
+    "language": "HTML",
+    "description": "Prince Portfolio"
+  },
+  {
+    "full_name": "alexandramartinez/squirrel-app",
+    "url": "https://github.com/alexandramartinez/squirrel-app",
+    "stars": 2,
+    "language": null,
+    "description": "Test app used to sync information between API Manager, Runtime Manager (CloudHub 2.0), and Exchange using GitHub Actions and Anypoint CLI."
+  },
+  {
+    "full_name": "AmericaSCORESBayArea/student-registration",
+    "url": "https://github.com/AmericaSCORESBayArea/student-registration",
+    "stars": 2,
+    "language": "JavaScript",
+    "description": "Student families need to easily access their records and waivers at least once per year. This service needs to be paper-free, secure, and reliable... and a future standard for school districts and youth-focused nonprofits/volunteer organizations. Interfaces with Mulesoft API's and Salesforce."
+  },
+  {
+    "full_name": "Upendra-Thunuguntla/mule-yaml-tools",
+    "url": "https://github.com/Upendra-Thunuguntla/mule-yaml-tools",
+    "stars": 2,
+    "language": "HTML",
+    "description": "This Repo has source code to a web application which is designed on HTML, CSS & JS. This webapp can convert YAML to Properties & Properties to YAML by providing some additional useful features for mulesoft developers."
+  },
+  {
+    "full_name": "manikmagar/mule4-x12-demo",
+    "url": "https://github.com/manikmagar/mule4-x12-demo",
+    "stars": 2,
+    "language": "DataWeave",
+    "description": "Mule 4 X12 Demo for CONNECT19 NYC Special Meetup"
+  },
+  {
+    "full_name": "djuang1/aws-sig-v4-policy",
+    "url": "https://github.com/djuang1/aws-sig-v4-policy",
+    "stars": 2,
+    "language": null,
+    "description": "AWS Signature V4 API Policy for Anypoint Platform API Manager"
+  },
+  {
+    "full_name": "dekoupl3d/remedy-ar-sapi",
+    "url": "https://github.com/dekoupl3d/remedy-ar-sapi",
+    "stars": 2,
+    "language": "RAML",
+    "description": "Remedy Action Request MuleSoft System API"
+  },
+  {
+    "full_name": "nabsha/mule4-property-placeholder",
+    "url": "https://github.com/nabsha/mule4-property-placeholder",
+    "stars": 2,
+    "language": "Java",
+    "description": "Mule 4 Property Placeholder Provider"
+  },
+  {
+    "full_name": "andrewwhitten/template-sfdc-file-check",
+    "url": "https://github.com/andrewwhitten/template-sfdc-file-check",
+    "stars": 2,
+    "language": "Java",
+    "description": "A MuleSoft Anypoint 4.3 app that will check file quality in Salesforce"
+  },
+  {
+    "full_name": "alexandramartinez/asyncapi-mule-sfpe",
+    "url": "https://github.com/alexandramartinez/asyncapi-mule-sfpe",
+    "stars": 2,
+    "language": null,
+    "description": "MuleSoft EDA-based integration using AsyncAPI specifications, Anypoint Code Builder, and Salesforce Platform Events."
+  },
+  {
+    "full_name": "mulesoft-developers/api-autodiscovery",
+    "url": "https://github.com/mulesoft-developers/api-autodiscovery",
+    "stars": 2,
+    "language": null,
+    "description": "In this tutorial, we will learn to set up API Autodiscovery to enable critical features such as security policies."
+  },
+  {
+    "full_name": "ozgurkarahan/Mulesoft-Api-Manager-CI-CD-Postman",
+    "url": "https://github.com/ozgurkarahan/Mulesoft-Api-Manager-CI-CD-Postman",
+    "stars": 2,
+    "language": null,
+    "description": "Repository to create an API proxy on Mulesoft Anypoint Api Manager with a postman colection"
+  },
+  {
+    "full_name": "djuang1/awsv4auth-extension",
+    "url": "https://github.com/djuang1/awsv4auth-extension",
+    "stars": 2,
+    "language": "Java",
+    "description": "AWS Signature V4 Connector for Mule 4.x"
+  },
+  {
+    "full_name": "netflexity/netflexity-anypoint-mq-prometheus-exporter",
+    "url": "https://github.com/netflexity/netflexity-anypoint-mq-prometheus-exporter",
+    "stars": 2,
+    "language": "Java",
+    "description": "Real-time Prometheus metrics & monitoring for MuleSoft Anypoint MQ \u2014 works with Grafana, Datadog, New Relic, Dynatrace"
+  },
+  {
+    "full_name": "soumya-ghosh-sg/mulesoft-tutorial-series-1",
+    "url": "https://github.com/soumya-ghosh-sg/mulesoft-tutorial-series-1",
+    "stars": 1,
+    "language": "CSS",
+    "description": "Sample Mule 4 projects for new learners"
+  },
+  {
+    "full_name": "jpontdia/micorp-customer-sapi",
+    "url": "https://github.com/jpontdia/micorp-customer-sapi",
+    "stars": 1,
+    "language": "DataWeave",
+    "description": "Salesforce Customer SAPI"
+  },
+  {
+    "full_name": "anthonyrabiaza/aws-elb-system-api",
+    "url": "https://github.com/anthonyrabiaza/aws-elb-system-api",
+    "stars": 1,
+    "language": "Java",
+    "description": "Mule Application for API configuration on AWS ELB Target Group"
+  },
+  {
+    "full_name": "RahulAnand442001/Mulesoft-B2B-Invoice-Mail-Service",
+    "url": "https://github.com/RahulAnand442001/Mulesoft-B2B-Invoice-Mail-Service",
+    "stars": 1,
+    "language": null,
+    "description": "MuleSoft application"
+  },
+  {
+    "full_name": "HybrIT-share/blog-create-parent-pom-for-mule-projects",
+    "url": "https://github.com/HybrIT-share/blog-create-parent-pom-for-mule-projects",
+    "stars": 1,
+    "language": null,
+    "description": "Sources for a blog about creating a parent POM.xml for Mulesoft projects"
+  },
+  {
+    "full_name": "skommaSFDC/mule-invoke-soap-via-http-request",
+    "url": "https://github.com/skommaSFDC/mule-invoke-soap-via-http-request",
+    "stars": 1,
+    "language": "DataWeave",
+    "description": "Typical way to consume a SOAP web service in Mule is using Consume component in Web Service Consumer module. But sometimes you can't. This is an alternate way to do that using HTTP Request component"
+  },
+  {
+    "full_name": "shyamrajprasad/mule-shopify-integration",
+    "url": "https://github.com/shyamrajprasad/mule-shopify-integration",
+    "stars": 1,
+    "language": null,
+    "description": "Shopify Integration with MuleSoft"
+  },
+  {
+    "full_name": "shauryasrivatava/Lead-Generation-Using-Gotowebinar",
+    "url": "https://github.com/shauryasrivatava/Lead-Generation-Using-Gotowebinar",
+    "stars": 1,
+    "language": "CSS",
+    "description": null
+  },
+  {
+    "full_name": "alexandramartinez/todo-api-impl",
+    "url": "https://github.com/alexandramartinez/todo-api-impl",
+    "stars": 1,
+    "language": "DataWeave",
+    "description": "A MuleSoft API implementation that demonstrates MySQL database integration using Docker containers. This project shows how to build a Todo API with database connectivity in Anypoint Code Builder (ACB)."
+  },
+  {
+    "full_name": "alexandramartinez/todo-app-mule-curietechai",
+    "url": "https://github.com/alexandramartinez/todo-app-mule-curietechai",
+    "stars": 1,
+    "language": null,
+    "description": "Everything discussed in the 'From Zero to API with MuleSoft, CurieTech AI & Anypoint Code Builder' playlist."
+  },
+  {
+    "full_name": "techguy-bhushan/MuleWithSpring",
+    "url": "https://github.com/techguy-bhushan/MuleWithSpring",
+    "stars": 1,
+    "language": "Java",
+    "description": "Spring beans in Mule applications "
+  },
+  {
+    "full_name": "tejanhu/MuleSoft",
+    "url": "https://github.com/tejanhu/MuleSoft",
+    "stars": 1,
+    "language": "HTML",
+    "description": "Developing MuleSoft API Applications"
+  },
+  {
+    "full_name": "vukan-markovic/Newsstand-backend",
+    "url": "https://github.com/vukan-markovic/Newsstand-backend",
+    "stars": 1,
+    "language": "RAML",
+    "description": "Mulesoft project that implements REST service with CRUD database operations, authorization, and authentication"
+  },
+  {
+    "full_name": "alexandramartinez/asyncapis-accounts-email",
+    "url": "https://github.com/alexandramartinez/asyncapis-accounts-email",
+    "stars": 1,
+    "language": null,
+    "description": "All the resources you need to implement a functional simple architecture with an Accounts and an Email services using AsyncAPI, Anypoint Code Builder, and the available message brokers: Anypoint MQ, Kafka, Solace PubSub+, and Salesforce CDC/Platform Events"
+  },
+  {
+    "full_name": "teslanet-nl/mule-coap-server-connector",
+    "url": "https://github.com/teslanet-nl/mule-coap-server-connector",
+    "stars": 1,
+    "language": "Java",
+    "description": "The CoapServer Connector adds CoAP server capability to Mule Enterprise Service Bus. Used by Mule 3 applications to implement IoT services."
+  },
+  {
+    "full_name": "skommaSFDC/mule-hackathon-2020",
+    "url": "https://github.com/skommaSFDC/mule-hackathon-2020",
+    "stars": 1,
+    "language": "Java",
+    "description": "Mule Hackathon 2020 - WhatsApp Messaging Automation using Sikuli, MuleSoft, and Windows Batch"
+  },
+  {
+    "full_name": "fortify-presales/FortifyMuleSoftDemo",
+    "url": "https://github.com/fortify-presales/FortifyMuleSoftDemo",
+    "stars": 1,
+    "language": "RAML",
+    "description": "An example MuleSoft Anypoint project for use in Fortify Demonstrations"
+  },
+  {
+    "full_name": "Benevanio/mule-flow",
+    "url": "https://github.com/Benevanio/mule-flow",
+    "stars": 1,
+    "language": "DataWeave",
+    "description": "Cria\u00e7\u00e3o de um projeto no anypoint Studio"
+  },
+  {
+    "full_name": "venkat-training/mulesoft_package_validator",
+    "url": "https://github.com/venkat-training/mulesoft_package_validator",
+    "stars": 1,
+    "language": "Python",
+    "description": "Automated quality assurance and security validation for MuleSoft integration projects. Detects hardcoded secrets, enforces coding standards, identifies orphaned components, and validates dependencies before production deployment."
+  },
+  {
+    "full_name": "integrational/always-latest-docker-images",
+    "url": "https://github.com/integrational/always-latest-docker-images",
+    "stars": 1,
+    "language": "Dockerfile",
+    "description": "Docker images that are regularly re-built and pushed to Docker Hub as `latest`, so that they always contain the latest releases of their dependencies."
+  },
+  {
+    "full_name": "msaleme/utility-ai-mulesoft-api",
+    "url": "https://github.com/msaleme/utility-ai-mulesoft-api",
+    "stars": 1,
+    "language": null,
+    "description": "AI-powered MuleSoft API platform enabling 10-minute grid recovery for utilities. Integrates SCADA, weather, DER, and field systems with autonomous agent coordination. -15M annual ROI through 85% outage reduction."
+  },
+  {
+    "full_name": "vinnybellack/mulesoft-to-talend-migration-finzooid",
+    "url": "https://github.com/vinnybellack/mulesoft-to-talend-migration-finzooid",
+    "stars": 1,
+    "language": null,
+    "description": "\ud83d\udecd\ufe0f **Finzooid Retail Integration Modernization \u2013 MuleSoft to Talend** Migration of 140+ MuleSoft applications to a modern Talend-based ecosystem for a US retail client. Focused on improving data quality, debuggability, and scalability across pricing, store, customer, and mobile services using Azure, AWS, and Snowflake."
+  },
+  {
+    "full_name": "msaleme/oracle-fusion-mulesoft-best-practices",
+    "url": "https://github.com/msaleme/oracle-fusion-mulesoft-best-practices",
+    "stars": 1,
+    "language": "DataWeave",
+    "description": "Architecture guidance and best practices for integrating Oracle Fusion Cloud (ERP & EPM) with MuleSoft using an API-led approach"
+  },
+  {
+    "full_name": "Ashutosh-Vijay/DataWeave-Studio",
+    "url": "https://github.com/Ashutosh-Vijay/DataWeave-Studio",
+    "stars": 1,
+    "language": "TypeScript",
+    "description": "Local DataWeave playground - no Anypoint Studio needed."
+  },
+  {
+    "full_name": "shyamrajprasad/mulesoft-tracing-module-integration",
+    "url": "https://github.com/shyamrajprasad/mulesoft-tracing-module-integration",
+    "stars": 1,
+    "language": null,
+    "description": "Tracing Module in MuleSoft"
+  },
+  {
+    "full_name": "andersoal/mule-example-munit-ftp",
+    "url": "https://github.com/andersoal/mule-example-munit-ftp",
+    "stars": 1,
+    "language": "RAML",
+    "description": "MuleSoft MUnit Example for FTP/SFTP/FTPS"
+  },
+  {
+    "full_name": "ian-stock/internet-button",
+    "url": "https://github.com/ian-stock/internet-button",
+    "stars": 1,
+    "language": "HTML",
+    "description": "Node.js app to simulate a Particle.io Photon Internet Button hooked up to Salesforce IoT through Mulesoft"
+  },
+  {
+    "full_name": "yhorndt/mule-3.x-log4j-update-script",
+    "url": "https://github.com/yhorndt/mule-3.x-log4j-update-script",
+    "stars": 1,
+    "language": "Shell",
+    "description": "A script that automates the steps needed to update the log4j2 binaries in a mule 3.x.x standalone installation. To remedy the log4shell vulnerabilities."
+  },
+  {
+    "full_name": "mulesoft/terraform-provider-anypoint",
+    "url": "https://github.com/mulesoft/terraform-provider-anypoint",
+    "stars": 1,
+    "language": "Go",
+    "description": "Official Terraform provider for MuleSoft Anypoint Platform - manage APIs, policies, environments, runtimes, and secrets as code."
+  },
+  {
+    "full_name": "MeDjb10/SOA-ESB-restaurant-reservation-system",
+    "url": "https://github.com/MeDjb10/SOA-ESB-restaurant-reservation-system",
+    "stars": 1,
+    "language": "Java",
+    "description": "A modular restaurant reservation system showcasing SOA with four web services (Restaurant List, Table Availability, Reservation, and Payment) integrated via MuleSoft ESB for seamless communication and orchestration."
+  },
+  {
+    "full_name": "shivangisingh98/Mule4-global-Error-Handling",
+    "url": "https://github.com/shivangisingh98/Mule4-global-Error-Handling",
+    "stars": 1,
+    "language": null,
+    "description": "Here I am going to make an API using mule4 which explains how to handle the errors globally in any other API's in mule4."
+  },
+  {
+    "full_name": "NapaLakshmiKiran/mule4-examples",
+    "url": "https://github.com/NapaLakshmiKiran/mule4-examples",
+    "stars": 1,
+    "language": "RAML",
+    "description": "This repository holds various examples using Mule ESB 4 Runtime."
+  },
+  {
+    "full_name": "manuelpayet/mulesoft-hot-deployer-eclipse-plugin",
+    "url": "https://github.com/manuelpayet/mulesoft-hot-deployer-eclipse-plugin",
+    "stars": 1,
+    "language": "Java",
+    "description": "Eclipse plugin to hot deploy in embedded mulesoft server"
+  },
+  {
+    "full_name": "joebaldwin95/queuesAsCode",
+    "url": "https://github.com/joebaldwin95/queuesAsCode",
+    "stars": 1,
+    "language": "Java",
+    "description": "A project to automate the creation of messaging queues."
+  }
+]

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule 
+	xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" 
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/ee/core 
+		http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd 
+		http://www.mulesoft.org/schema/mule/core 
+		http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/salesforce 
+		http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd">
+		
+	<flow name="post:\customers">
+		
+		<logger 
+			level="INFO" 
+			doc:name="Logger" 
+			message='#[%dw 2.0&#10;import * from dw::util::Values&#10;output application/json&#10;---&#10;{&#10;	message: "Create customer",&#10;    payload: payload&#10;		mask field("lastName") with "*****"&#10;		mask field("address") with "*****"&#10;		mask field("email") with "*****"  &#10;}]'
+			category="app"/>
+			
+		<set-variable 
+			value='#[%dw 2.0&#10;output application/java&#10;---&#10;{&#10;    "firstName": payload.firstName default "",&#10;    "lastName": payload.lastName default ""&#10;}]' 
+			doc:name="OpenTelemetry Tags" 
+			variableName="openTelemetryTags" />
+
+		<ee:transform doc:name="assign variables" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="location" ><![CDATA[attributes.requestUri ++ "/"]]></ee:set-variable>
+				<ee:set-variable variableName="firstName" ><![CDATA[payload.firstName]]></ee:set-variable>
+				<ee:set-variable variableName="lastName" ><![CDATA[payload.lastName]]></ee:set-variable>
+				<ee:set-variable variableName="payloadBackup" ><![CDATA[payload]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		
+		<flow-ref 
+			doc:name="Get Customer By FirstName and LastName" 
+			name="queryCustomer"/>
+					
+		<choice doc:name="Customer Exist?" >
+			<when expression="#[sizeOf(payload) == 0]">
+				<flow-ref 
+					doc:name="newCustomer" 
+					name="newCustomer"/>
+			</when>
+			
+			<otherwise >
+				<logger 
+					level="DEBUG" 
+					doc:name="Logger"
+					message="The customer already exists in the database"
+					category="app"/>
+
+				<ee:transform doc:name="response">
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+  message: "${messages.record-exists}"
+}
+]]></ee:set-payload>
+					</ee:message>
+					<ee:variables >
+						<ee:set-variable variableName="httpStatus" ><![CDATA[409]]></ee:set-variable>
+					</ee:variables>
+				</ee:transform>
+				
+			</otherwise>
+		</choice>
+		<error-handler ref="global-error-handler" />		
+		
+	</flow>
+	
+	
+	
+	<sub-flow name="newCustomer">
+		<logger 
+			level="DEBUG" 
+			doc:name="Logger" 
+			message="The customer is going to be created" 
+			category="app"/>
+
+		<ee:transform doc:name="Insert Payload" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+[
+	vars.payloadBackup mapObject ((value, key, index) -> 
+        ((key as String) ++ "__c") : value
+    )
+]]]>
+				</ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger 
+			level="DEBUG" 
+			doc:name="Logger" 
+			message="#[output application/java --- payload]" category="app"/>
+
+		<salesforce:create 
+			type="Customer__c" 
+			doc:name="Create Customer" 
+			config-ref="GlobalSalesforceConfig"/>
+
+		<logger 
+			level="DEBUG" 
+			doc:name="Logger" 
+			message="#[output application/json --- payload]" 
+			category="app"/>
+
+		<choice doc:name="verify success" >
+			<when expression="#[payload.successful == true]">
+				<logger 
+					level="DEBUG" 
+					doc:name="Logger"  
+					message="#['Record created successfully with id=' ++ payload.items[0].id]" 
+					category="app"/>
+
+				<ee:transform doc:name="headers and response" >
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  message: "${messages.record-create-success}"
+}]]></ee:set-payload>
+					</ee:message>
+
+					<ee:variables >
+						<ee:set-variable 
+							variableName="outboundHeaders" ><![CDATA[%dw 2.0
+output application/java
+---
+{"Location": 
+	( (vars.location as String)
+		++ (payload.items[0].id as String)
+	)
+}]]></ee:set-variable>
+					</ee:variables>
+				</ee:transform>
+			</when>
+
+			<otherwise >
+				<logger 
+					level="DEBUG" 
+					doc:name="Logger"
+					message="The customer couldn't be created" 
+					category="app"/>
+				
+				<ee:transform doc:name="Status 500 Response" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+  message: "${messages.record-create-error}"
+}]]></ee:set-payload>
+					</ee:message>
+
+					<ee:variables >
+						<ee:set-variable 
+							variableName="httpStatus" ><![CDATA["500"]]></ee:set-variable>
+					</ee:variables>
+				</ee:transform>
+			</otherwise>
+		</choice>
+	</sub-flow>
+
+</mule>

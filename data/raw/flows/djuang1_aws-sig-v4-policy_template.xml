@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule
+  xmlns="http://www.mulesoft.org/schema/mule/core"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:http="http://www.mulesoft.org/schema/mule/http"
+  xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+  xmlns:http-policy="http://www.mulesoft.org/schema/mule/http-policy"
+  xmlns:http-transform="http://www.mulesoft.org/schema/mule/http-policy-transform"
+  xmlns:awsv4auth="http://www.mulesoft.org/schema/mule/awsv4auth"
+  xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+               http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+               http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+               http://www.mulesoft.org/schema/mule/http-policy http://www.mulesoft.org/schema/mule/http-policy/current/mule-http-policy.xsd
+               http://www.mulesoft.org/schema/mule/http-policy-transform http://www.mulesoft.org/schema/mule/http-policy-transform/current/mule-http-policy-transform.xsd
+               http://www.mulesoft.org/schema/mule/awsv4auth http://www.mulesoft.org/schema/mule/awsv4auth/current/mule-awsv4auth.xsd">
+
+    <http-policy:proxy name="{{{policyId}}}-custom-policy">
+    <http-policy:operation propagateMessageTransformations="true">
+      <logger level="INFO" message="BEFORE HTTP REQUEST"/>
+
+      <set-variable value="#[output application/json --- (now() &gt;&gt; &quot;UTC&quot;) as DateTime {format:&quot;yyyyMMdd'T'HHmmss'Z'&quot;}]" variableName="xAmzDate"/>
+
+      <set-variable value="#[payload]" variableName="origPayload"/>
+      <set-variable value="{{ hostName }}" variableName="awsHostName"/>
+
+      <logger level="INFO" message="#[vars.xAmzDate]"/>
+
+      <awsv4auth:get-authorization-string
+        accessKey="{{ awsAccessKey }}"
+        secretKey="{{ awsSecretKey }}"
+        regionName="{{ region }}"
+        serviceName="{{ serviceName }}"
+        hostName="{{ hostName }}" 
+        requestType="{{ requestType }}"
+        canonicalURI="{{ canonicalURI }}"
+        timeStamp="#[vars.xAmzDate]"
+        body="#[payload]"/>
+
+      <set-variable value="#[payload]" variableName="authString"/>
+
+      <set-payload value="#[vars.origPayload]"/>
+
+      <logger level="INFO" message="BEFORE TRANSFORM"/>
+
+      <logger level="INFO" message="#[payload]"/>
+      
+      <http-transform:add-headers outputType="requester-request">
+        <http-transform:headers>#[output application/json ---      
+          { 
+            "Authorization" : vars.authString, 
+            "Content-Type" : "application/json", 
+            "X-Amz-Date" : vars.xAmzDate ++ "", 
+            "Host" : vars.awsHostName
+          }]
+        </http-transform:headers>
+      </http-transform:add-headers>
+
+      <logger level="INFO" message="AFTER TRANSFORM"/>
+
+      <http-policy:execute-next/>
+
+      <logger level="INFO" message="AFTER HTTP REQUEST / EXECUTE"/>
+
+    </http-policy:operation>
+  </http-policy:proxy>
+</mule>

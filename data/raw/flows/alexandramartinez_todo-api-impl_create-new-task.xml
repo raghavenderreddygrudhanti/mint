@@ -1,0 +1,29 @@
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+	http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+	http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+    <sub-flow name="create-new-task-subflow">
+        <logger doc:name="START" doc:id="mjtvcd" message="Start - Create new task"/>
+        <ee:transform doc:name="inputPayload" doc:id="rbpqoj" >
+        <ee:variables>
+            <ee:set-variable variableName="inputPayload" resource="dw/create-task-input.dwl"/>
+        </ee:variables>
+    </ee:transform>
+        <db:insert doc:name="Insert new task" doc:id="ympvre" config-ref="Mysql_Database_Config">
+            <db:sql><![CDATA[INSERT INTO tasks (title, description, dueDate, completed) 
+VALUES (:title, :description, :dueDate, :completed)]]></db:sql>
+        
+            <db:input-parameters><![CDATA[#[vars.inputPayload]]]></db:input-parameters>        
+        </db:insert>
+        <db:select doc:name="get ID" doc:id="jqyymr" config-ref="Mysql_Database_Config">
+            <db:sql><![CDATA[SELECT * from tasks WHERE title = :title ORDER BY id DESC LIMIT 1;]]></db:sql>
+            <db:input-parameters><![CDATA[#[vars.inputPayload]]]></db:input-parameters>    
+        </db:select>
+        <ee:transform doc:name="to json response" doc:id="pnbsmb" >
+            <ee:message >
+                <ee:set-payload doc:name="Set payload" doc:id="lyyloh" resource="dw/toJson.dwl"/>
+            </ee:message>
+        </ee:transform>
+        <logger doc:name="END" doc:id="lrdbof" message="End - Create new task"/></sub-flow>
+</mule>

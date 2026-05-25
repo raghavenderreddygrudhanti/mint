@@ -1,0 +1,49 @@
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd  http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd  http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd  http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd  http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+  <http:listener-config name="todo-task-api-httpListenerConfig">
+    <http:listener-connection host="0.0.0.0" port="8081"></http:listener-connection>
+  </http:listener-config>
+  <apikit:config api="resource::5624e4be-f53b-4bee-8c3d-df519451790c:todo-task-api:1.0.2:oas:zip:todo-task-api.yaml" httpStatusVarName="httpStatus" name="todo-task-api-config" outboundHeadersMapName="outboundHeaders"></apikit:config>
+  <db:config name="Mysql_Database_Config">
+    <db:my-sql-connection database="mysqldb" host="127.0.0.1" password="password" port="3306" user="user"></db:my-sql-connection>
+  </db:config>
+  <sub-flow name="global:get-task-by-id-subflow">
+    <ee:transform doc:id="baltet" doc:name="taskId">
+      <ee:variables>
+        <ee:set-variable resource="dw/taskId-uriParam.dwl" variableName="taskId"></ee:set-variable>
+      </ee:variables>
+    </ee:transform>
+    <db:select config-ref="Mysql_Database_Config" doc:id="igmrhl" doc:name="Get task by ID">
+      <db:sql>
+        <![CDATA[SELECT * from tasks WHERE id = :taskId LIMIT 1;]]>
+      </db:sql>
+      <db:input-parameters>
+        <![CDATA[#[vars.taskId]]]>
+      </db:input-parameters>
+    </db:select>
+    <choice doc:name="Choice" doc:id="yhixat">
+      <when expression="#[isEmpty(payload)]">
+        <ee:transform doc:name="404" doc:id="xlpzpa">
+          <ee:message>
+            <ee:set-payload doc:name="Set payload" doc:id="fimrda">
+              <![CDATA[%dw 2.0
+output application/json
+---
+{message: "Task not found"}]]>
+            </ee:set-payload>
+          </ee:message>
+          <ee:variables>
+            <ee:set-variable variableName="httpStatus">404</ee:set-variable>
+          </ee:variables>
+        </ee:transform>
+        <raise-error type="TASKS:NOT_FOUND" doc:name="Task not found" doc:id="lbuzhn"/>
+      </when>
+      <otherwise>
+        <ee:transform doc:id="dwckex" doc:name="to json response">
+          <ee:message>
+            <ee:set-payload doc:id="trrcrr" doc:name="Set payload" resource="dw/toJson.dwl"></ee:set-payload>
+          </ee:message>
+        </ee:transform>
+      </otherwise>
+    </choice>
+  </sub-flow>
+</mule>

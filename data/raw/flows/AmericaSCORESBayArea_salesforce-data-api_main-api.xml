@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties" xmlns:slack="http://www.mulesoft.org/schema/mule/slack" xmlns:xml-module="http://www.mulesoft.org/schema/mule/xml-module" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd  http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd http://www.mulesoft.org/schema/mule/xml-module http://www.mulesoft.org/schema/mule/xml-module/current/mule-xml-module.xsd http://www.mulesoft.org/schema/mule/slack http://www.mulesoft.org/schema/mule/slack/current/mule-slack.xsd  http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="salesforce-data-api-main">
+        <http:listener config-ref="salesforce-data-api-httpListenerConfig" path="/api/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body><![CDATA[#[vars.errorPayload]]]></http:body>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:error-response>
+        </http:listener>
+        <flow-ref doc:name="Log Request" doc:id="ce9341aa-9abd-4901-9611-5d9f679bfbc9" name="entry-flow"/>
+		<apikit:router config-ref="salesforce-data-api-config" />
+        <flow-ref doc:name="Log Response" doc:id="553e8f82-198b-4c48-829e-7117c3c7634d" name="exit-flow"/>
+		<error-handler>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="a0f1f919-7033-446f-be52-c49a7341cb34" type="APIKIT:BAD_REQUEST, CUSTOM:BAD_REQUEST, SALESFORCE:INVALID_INPUT">
+				<ee:transform doc:name="Transform Message" doc:id="9e09454e-d82f-4a26-854e-16807ca0c340">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+                            output application/json
+                            ---
+                            {
+	                            message: "Invalid Request Format",
+	                            error: (error.description default ""),
+	                            detailedError: (error.detailedDescription default ""),
+	                            errorType: (error.errorType.namespace default "") ++ ":" ++ (error.errorType.identifier default ""),
+	                            errorSource: (error.dslSource  default "")
+                            }
+                            ]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<set-variable value="#[payload]" doc:name="Set Error Payload" doc:id="6be766f0-e5f2-4b31-9bce-ff416d42ec7e" variableName="errorPayload"/>
+				<set-variable value="400" doc:name="Set Status Code" doc:id="2307b323-9155-4bc7-aad5-b962fd65c13e" variableName="httpStatus" />
+				<flow-ref doc:name="Flow Reference: Slack" doc:id="1faae1e3-cf47-4ace-9b3f-552f9b106394" name="global-error-handler" />
+			</on-error-propagate>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="dc86c42d-ac90-471d-8357-a899fd2d727a" type="APIKIT:METHOD_NOT_ALLOWED">
+				<ee:transform doc:name="Transform Message" doc:id="4091badb-b850-4886-854f-20c0457e2ec9">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+                            output application/json
+                            ---
+                            {
+	                            message: "Method Not Allowed",
+	                            error: (error.description default ""),
+	                            detailedError: (error.detailedDescription default ""),
+	                            errorType: (error.errorType.namespace default "") ++ ":" ++ (error.errorType.identifier default "")
+                            }
+                            ]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<set-variable value="#[payload]" doc:name="Set Error Payload" doc:id="a1d84446-9253-4a73-b825-d8dfefc60dbe" variableName="errorPayload" />
+				<set-variable value="405" doc:name="Set Status Code" doc:id="0c87cb06-185f-462b-b020-62c93c270659" variableName="httpStatus" />
+				<flow-ref doc:name="Flow Reference: Slack" doc:id="c86b6028-3956-4717-8a9e-fddca81a4ed7" name="global-error-handler" />
+			</on-error-propagate>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="d88e84c2-877f-4294-9134-54a0e7724cd0" type="APIKIT:NOT_ACCEPTABLE">
+				<ee:transform doc:name="Transform Message" doc:id="1c1370e1-17af-4c24-b4a6-37f3e65865b5">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+                            output application/json
+                            ---
+                            {
+	                            message: "Not Acceptable",
+	                            error: (error.description default ""),
+	                            detailedError: (error.detailedDescription default ""),
+	                            errorType: (error.errorType.namespace default "") ++ ":" ++ (error.errorType.identifier default "")
+                            }
+                            ]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<set-variable value="#[payload]" doc:name="Set Error Payload" doc:id="b4e0c92e-31d7-4e8b-9b37-071ad84d087f" variableName="errorPayload" />
+				<set-variable value="406" doc:name="Set Status Code" doc:id="a7987e43-a6ca-4625-992d-343cac1fb5a7" variableName="httpStatus" />
+				<flow-ref doc:name="Flow Reference: Slack" doc:id="6e7639f8-df64-4ef8-a4f7-43408bec260b" name="global-error-handler" />
+			</on-error-propagate>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="ecefc8e2-d9c7-4cd9-94ec-946bf785dbc3" type="APIKIT:NOT_FOUND">
+				<ee:transform doc:name="Transform Message" doc:id="b78b308b-be5c-498a-8c46-c35a3227b015">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+                            output application/json
+                            ---
+                            {
+	                            message: "Resource Not Found",
+	                            error: (error.description default ""),
+	                            detailedError: (error.detailedDescription default ""),
+	                            errorType: (error.errorType.namespace default "") ++ ":" ++ (error.errorType.identifier default "")
+                            }
+                            ]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<set-variable value="#[payload]" doc:name="Set Error Payload" doc:id="a4a81b04-4bac-4ec2-8bd7-4cd0c828e5d9" variableName="errorPayload" />
+				<set-variable value="404" doc:name="Set Status Code" doc:id="ca868925-d2c4-4fc6-97e7-993f7d6b64ee" variableName="httpStatus" />
+				<flow-ref doc:name="Flow Reference: Slack" doc:id="b5de4e3c-c67a-467f-aee3-96b277156402" name="global-error-handler" />
+			</on-error-propagate>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="5a00b6ab-caa2-45c4-9679-6ca699e7fcec" type="APIKIT:UNSUPPORTED_MEDIA_TYPE">
+				<ee:transform doc:name="Transform Message" doc:id="460e6b14-8b4f-4be0-8499-bf379b32bd7b">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+                            output application/json
+                            ---
+                            {
+	                            message: "Unsupported Media Type",
+	                            error: (error.description default ""),
+	                            detailedError: (error.detailedDescription default ""),
+	                            errorType: (error.errorType.namespace default "") ++ ":" ++ (error.errorType.identifier default "")
+                            }
+                            ]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<set-variable value="#[payload]" doc:name="Set Error Payload" doc:id="34c42033-302c-483e-9eab-3463c3ba5b9f" variableName="errorPayload" />
+				<set-variable value="415" doc:name="Set Status Code" doc:id="d956cb20-d930-4c47-bcb5-93709a1760b6" variableName="httpStatus" />
+				<flow-ref doc:name="Flow Reference: Slack" doc:id="dff67fa8-7bcc-47d5-9056-5dfdda7f194d" name="global-error-handler" />
+			</on-error-propagate>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="59e204b7-ab75-4ade-9d9b-524e535c51c0" type="STREAM_MAXIMUM_SIZE_EXCEEDED">
+				<ee:transform doc:name="Transform Message" doc:id="0031a60b-7b7d-48b7-9ae8-ac7aa11932a6">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+                            output application/json
+                            ---
+                            {
+	                            message: "Payload Too Large",
+	                            error: (error.description default ""),
+	                            detailedError: (error.detailedDescription default ""),
+	                            errorType: (error.errorType.namespace default "") ++ ":" ++ (error.errorType.identifier default "")
+                            }
+                            ]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<set-variable value="#[payload]" doc:name="Set Error Payload" doc:id="b651e2f2-014c-44e7-902e-5000e4ae18c5" variableName="errorPayload" />
+				<set-variable value="413" doc:name="Set Status Code" doc:id="fec9df4e-f772-4c6a-a3cb-0acf64a9d0bc" variableName="httpStatus" />
+				<flow-ref doc:name="Flow Reference: Slack" doc:id="cf82cf87-860c-406c-a099-128aea1c83c2" name="global-error-handler" />
+			</on-error-propagate>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="28850425-c2dd-4823-ad88-10b5b830832c" type="EXPRESSION">
+				<ee:transform doc:name="Transform Message" doc:id="5ca418cc-6b86-4828-a970-e7167bcb4ce3">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+                            output application/json
+                            ---
+                            {
+	                            message: "DataWeave Expression Error",
+	                            error: (error.description default ""),
+	                            detailedError: (error.detailedDescription default ""),
+	                            errorType: (error.errorType.namespace default "") ++ ":" ++ (error.errorType.identifier default "")
+                            }
+                            ]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<set-variable value="#[payload]" doc:name="Set Error Payload" doc:id="7109601b-3097-49ee-91b1-88ed0bca55f6" variableName="errorPayload" />
+				<set-variable value="500" doc:name="Set Status Code" doc:id="0d0e3796-4b71-4bd6-9e48-a132ee5148f6" variableName="httpStatus" />
+				<flow-ref doc:name="Flow Reference: Slack" doc:id="488dbbf8-bbeb-4bbf-ac6a-ab43387441b8" name="global-error-handler" />
+			</on-error-propagate>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="e1f4534e-a13b-43f5-b94c-c6f26f8de96e" type="SLACK:BAD_REQUEST, SLACK:CLIENT_ERROR, SLACK:CONNECTIVITY, SLACK:INTERNAL_SERVER_ERROR, SLACK:NOT_ACCEPTABLE, SLACK:NOT_FOUND, SLACK:RETRY_EXHAUSTED, SLACK:SERVER_ERROR, SLACK:SERVICE_UNAVAILABLE, SLACK:TIMEOUT, SLACK:TOO_MANY_REQUESTS, SLACK:UNAUTHORIZED, SLACK:UNSUPPORTED_MEDIA_TYPE">
+				<ee:transform doc:name="Transform Message" doc:id="346156cb-8d42-4540-9285-febd3fe01b1d">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+                            output application/json
+                            ---
+                            {
+	                            message: "Slack API Error",
+	                            error: (error.description default ""),
+	                            detailedError: (error.detailedDescription default ""),
+	                            errorType: (error.errorType.namespace default "") ++ ":" ++ (error.errorType.identifier default "")
+                            }
+                            ]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<set-variable value="#[payload]" doc:name="Set Error Payload" doc:id="e9e51531-4779-4a6c-8821-9504d93ee3ad" variableName="errorPayload" />
+				<set-variable value="500" doc:name="Set Status Code" doc:id="3cbfcf02-3cac-4ec6-afcd-50024d3ff8d6" variableName="httpStatus" />
+				<flow-ref doc:name="Flow Reference: Slack" doc:id="4b9c6834-bdea-4c69-8ea9-233bae3a559c" name="global-error-handler" />
+			</on-error-propagate>
+            <on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="67896d39-b9c7-4032-9762-8194362c31d7" type="CUSTOM:CUSTOM_ERROR">
+				<choice doc:name="Choice" doc:id="1c191d29-1312-4e97-a1a9-f5d37d8be49a">
+					<when expression='#[(vars.errorCustomType contains "DUPLICATES_DETECTED") or (lower(vars.errorCustomMessage) contains "duplicate")]'>
+						<set-variable value="409" doc:name="Set Status Code" doc:id="ce66e384-6022-462c-ba5e-342621113bb5" variableName="httpStatus" />
+						<set-variable value='#[vars.errorCustomType replace "UNKNOWN" with "DUPLICATES_DETECTED"]' doc:name="Update errorCustomType" doc:id="fa24b860-a1da-478a-8fcb-4c209b129de7" variableName="errorCustomType" />
+					</when>
+					<when expression='#[(vars.errorCustomType contains "MALFORMED_ID") or (vars.errorCustomMessage contains "MALFORMED_ID" )]'>
+						<set-variable value="400" doc:name="Set Status Code" doc:id="51fbd79f-5402-4a83-8ca3-b8680e3b81e0" variableName="httpStatus" />
+						<set-variable value='#[vars.errorCustomType replace "UNKNOWN" with "MALFORMED_ID"]' doc:name="Update errorCustomType" doc:id="5049dfed-7516-4f02-b8b1-b273863b706b" variableName="errorCustomType"/>
+					</when>
+					<when expression='#[(vars.errorCustomType contains "NOT_FOUND")]'>
+						<set-variable value="404" doc:name="Set Status Code" doc:id="b287636a-e58c-4f72-9bd4-311dd2428e3c" variableName="httpStatus" />
+					</when>
+				</choice>
+				<ee:transform doc:name="Transform Message" doc:id="e7421cb1-862d-4dc7-bbee-e8ab29f998fe">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+                            output application/json
+                            ---
+                            {
+	                            message: vars.errorCustomMessage default "Unknown Error",
+	                            error: (error.description default ""),
+	                            detailedError: (error.detailedDescription default ""),
+	                            errorType: "CUSTOM:" ++ (vars.errorCustomType default ""),
+                            }
+                            ]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<set-variable value="#[payload]" doc:name="Set Error Payload" doc:id="2ca32539-a303-468c-9ec8-18bd01b62ee0" variableName="errorPayload" />
+				<flow-ref doc:name="Flow Reference: Slack" doc:id="896efe21-12cb-4b19-a8a6-5187095bed6e" name="global-error-handler" />
+			</on-error-propagate>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="67896d39-b9c7-4032-9762-8194362c31d7" type="ANY">
+				<ee:transform doc:name="Transform Message" doc:id="d28db679-7c68-4a68-9b07-21c7e09dec6d" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+                            output application/json
+                            ---
+                            {
+	                            message: "An unknown error occurred",
+	                            error: (error.description default ""),
+	                            detailedError: (error.detailedDescription default ""),
+	                            errorType: "UNKNOWN:" ++ (error.errorType.namespace default "") ++ ":" ++ (error.errorType.identifier default "")
+                            }
+                            ]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<set-variable value="#[payload]" doc:name="Set Error Payload" doc:id="bfae5b7b-29e6-471b-bfeb-cfd3cc2bbfa5" variableName="errorPayload" />
+				<flow-ref doc:name="Flow Reference: Slack" doc:id="896efe21-12cb-4b19-a8a6-5187095bed6e" name="global-error-handler" />
+			</on-error-propagate>
+        </error-handler>
+    </flow>
+    <flow name="global-error-handler" doc:id="a1be3754-f0ea-41f0-abcb-137e877e5b4d">
+		<logger level="ERROR" doc:name="Log Everything" doc:id="7f0fcdd4-ff75-49ec-9615-7dc6f1e85b3c" message="#[%dw 2.0&#10;import p from Mule&#10;fun format(d: DateTime) = d as String {format: 'MMM dd, yyyy hh:mm:ss a'}&#10;output application/json&#10;var errorMsg = vars.errorPayload.message default 'N/A'&#10;var payloadStr = (write(vars.originalPayload, 'application/json') default 'No payload available')&#10;output application/json&#10;---&#10;{&#10;    'Environment': p('env'),&#10;    'Source of Request': if (vars.originalAttributes.headers.'X-Platform' != null and vars.originalAttributes.headers.'X-Build-Version' != null) ((vars.originalAttributes.headers.Origin default 'N/A') ++ ' [' ++ vars.originalAttributes.headers.'X-Platform' ++ ', ' ++ vars.originalAttributes.headers.'X-Build-Version' ++ ']') else (vars.originalAttributes.headers.Origin default 'N/A'),&#10;    'Endpoint': (vars.originalAttributes.method default 'N/A') ++ ' ' ++ (vars.originalAttributes.maskedRequestPath default 'N/A'),&#10;    'Query_Parameters': (vars.originalAttributes.queryString default 'N/A'),&#10;    'Timestamp': format(now() >> 'America/Los_Angeles'),&#10;    'Message': errorMsg,&#10;    'Error_Type': (vars.errorPayload.errorType default 'N/A'),&#10;    'Error_Message': (vars.errorPayload.error default 'N/A'),&#10;    'Detailed_Error_Description': (vars.errorPayload.detailedError default 'N/A'),&#10;    'Source': (vars.errorPayload.errorSource default 'N/A'),&#10;    'Payload': payloadStr&#10;}]"/>
+		<choice doc:name="Choice: " doc:id="f9d0778b-d45e-4b67-89b6-cf6b1ffed3af" >
+			<when expression="#[(trim(p('slack.enabled') as String)) as Boolean]">
+				<slack:create-chatpost-message doc:name="Send Slack Message" doc:id="b991cd72-5997-4e02-ad87-a324cfcfa707" config-ref="Slack_Connector_Config">
+				<slack:chatpost-message-content><![CDATA[#[%dw 2.0
+			import p from Mule
+			fun format(d: DateTime) = d as String {format: "MMM dd, yyyy hh:mm:ss a"}
+			var platform = vars.originalAttributes.headers.'X-Platform'
+			var buildVersion = vars.originalAttributes.headers.'X-Build-Version'
+			var origin = vars.originalAttributes.headers.Origin default "N/A"
+			output application/json
+			---
+			{
+			    channel: "mule-api-" ++ p('env') ++ "-errors",
+			    text: "🚨 *Error Notification* 🚨",
+			    blocks: [
+			        {
+			            "type": "section",
+			            text: {
+			                "type": "mrkdwn",
+			                text: "🚨 *Error Notification* 🚨\n"
+			                   ++ "*Environment:* " ++ p('env') ++ "\n" 
+			                   ++ "*Source of Request:* " ++ (if (platform != null and buildVersion != null) (origin ++ " [" ++ platform ++ ", " ++ buildVersion ++ "]") else origin) ++ "\n"
+			   			       ++ "*Firebase ID:* " ++ (vars.originalAttributes.headers.'X-Firebase-UID' default "N/A") ++ "\n"
+			                   ++ "*Endpoint:* `" ++ (vars.originalAttributes.method default "N/A") ++ " " ++ (vars.originalAttributes.maskedRequestPath default "N/A") ++ "`\n"
+			                   ++ "*Query Parameters:* " ++ (vars.originalAttributes.queryString default "N/A") ++ "\n"
+			                   ++ "*Timestamp (PT):* " ++ (format(now() >> "America/Los_Angeles"))
+			            }
+			        }
+			    ]
+			}]]]></slack:chatpost-message-content>
+		</slack:create-chatpost-message>
+		<set-variable value="#[payload]" variableName="firstMessageResponse"  doc:name="Save Response" doc:id="d2585c63-91d7-47a7-a06b-8f5e3ffd7ecd" />
+			<slack:create-chatpost-message
+                doc:name="Send The Error Message"
+                doc:id="1e59cb6e-6637-4e1f-b069-d755ed1519b3"
+                config-ref="Slack_Connector_Config">
+                <slack:chatpost-message-content><![CDATA[#[%dw 2.0
+import p from Mule
+output application/json
+var errorMsg = vars.errorPayload.message default "N/A"
+var safeErrorMsg = if (sizeOf(errorMsg) <= 2500) errorMsg else "(truncated, only 2500 chars)\n" ++ errorMsg[0 to 2499]
+---
+{
+    channel: "mule-api-" ++ p("env") ++ "-errors",
+    text: "More info:",
+    blocks: [
+        {
+            "type": "section",
+            text: {
+                "type": "mrkdwn",
+                text: "*Message:* " ++ safeErrorMsg
+            }
+        }
+    ],
+    thread_ts: vars.firstMessageResponse.ts
+}]]]></slack:chatpost-message-content>
+            </slack:create-chatpost-message>
+				<slack:create-chatpost-message doc:name="Send The Error Details Message" doc:id="7a328254-c580-40d6-9ad4-74d48f56957c" config-ref="Slack_Connector_Config" >
+					<slack:chatpost-message-content ><![CDATA[#[%dw 2.0
+import p from Mule
+output application/json
+---
+{
+    channel: "mule-api-" ++ p('env') ++ "-errors",
+    text:"More info:",
+   	blocks: [
+    	{
+        	"type": "section",
+        	text: {
+                "type": "mrkdwn",
+                text:
+                       "*Error Type:* " ++ (vars.errorPayload.errorType default "N/A") ++ "\n"
+	                   ++ "*Error Message:* " ++ (vars.errorPayload.error default "N/A") ++ "\n"
+	                   ++ "*Detailed Error Description:* " ++ (vars.errorPayload.detailedError default "N/A") ++ "\n"
+	                   ++ "*Source:* " ++ (vars.errorPayload.errorSource default "N/A")
+	             
+               }
+        	}
+    ],
+    thread_ts: vars.firstMessageResponse.ts
+}]]]></slack:chatpost-message-content>
+				</slack:create-chatpost-message>
+				<slack:create-chatpost-message doc:name="Send The Original Payload" doc:id="bf2cacc3-61ea-4d16-b113-f88b75c67ff2" config-ref="Slack_Connector_Config" >
+					<slack:chatpost-message-content ><![CDATA[#[%dw 2.0
+import p from Mule
+output application/json
+var payloadStr = (write(vars.originalPayload, "application/json") default "No payload available")
+var safePayload = if (sizeOf(payloadStr) <= 2500) 
+                     payloadStr 
+                  else 
+                     "(truncated, only 2500 chars)\n" ++ payloadStr[0 to 2499]
+---
+{
+    channel: "mule-api-" ++ p("env") ++ "-errors",
+    text: "More info:",
+    blocks: [
+        {
+            "type": "section",
+            text: {
+                "type": "mrkdwn",
+                text: if (!isEmpty(vars.originalPayload))
+                        "*Payload Attached:* ```" ++ safePayload ++ "```"
+                      else "\n*Payload Attached:* No payload attached."
+            }
+        }
+    ],
+    thread_ts: vars.firstMessageResponse.ts
+}]]]></slack:chatpost-message-content>
+				</slack:create-chatpost-message>
+			</when>
+		</choice>
+	</flow>
+	<flow name="salesforce-data-api-console">
+        <http:listener config-ref="salesforce-data-api-httpListenerConfig" path="/console/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body>#[payload]</http:body>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:console config-ref="salesforce-data-api-config" />
+        <error-handler>
+            <on-error-propagate type="APIKIT:NOT_FOUND">
+				<ee:transform xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+                            output application/json
+                            ---
+                            {message: "Resource not found"}]]>
+                        </ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">404</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+        </error-handler>
+    </flow>
+    <sub-flow name="entry-flow" doc:id="077e2d7c-81f0-4362-a3da-541e9c96751f">
+        <logger level="INFO" doc:name="Log request" doc:id="1ca2fef3-57b9-433a-9b11-4d18746f8931" message="Request received for #[attributes.method] #[attributes.requestPath] - Payload #[payload]" />
+        <ee:transform doc:name="Store request path and method">
+            <ee:variables>
+                <ee:set-variable variableName="requestPath"><![CDATA[attributes.requestPath]]></ee:set-variable>
+                <ee:set-variable variableName="method"><![CDATA[attributes.method]]></ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+		<set-variable value="#[payload]" doc:name="Save Original Payload" doc:id="9e486dc6-e2af-4cb4-9b3d-4148dd2cfdb3" variableName="originalPayload"/>
+        <set-variable value="#[attributes]" doc:name="Save Original Payload" doc:id="9e486dc6-e2af-4cb4-9b3d-4148dd2cfdb3" variableName="originalAttributes"/>
+    </sub-flow>
+    <sub-flow name="exit-flow" doc:id="748c4e8c-e935-4b46-83ec-a963f8551eb9">
+        <logger level="INFO" doc:name="Log response" doc:id="f07808f1-2396-4154-8ad1-64e2761b6f01" message="Sending response for #[vars.method] #[vars.requestPath] - #[payload]" />
+    </sub-flow>
+    <sub-flow name="message-for-not-implemented-endpoints" doc:id="a1961882-e708-4003-b210-b63b6b3032c1">
+        <ee:transform xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+                    output application/json
+                    ---
+                    {message: "Not implemented yet"}]]>
+                </ee:set-payload>
+            </ee:message>
+            <ee:variables>
+                <ee:set-variable variableName="httpStatus">501</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+    </sub-flow>
+    <flow name="patch:\assessment\(assessmentId):application\json:salesforce-data-api-config">
+        <ee:transform>
+            <ee:variables>
+                <ee:set-variable variableName="assessmentId">attributes.uriParams.'assessmentId'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <ee:transform>
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+                        output application/json
+                        ---
+                        {message: "Assessment updated"}]]>
+                </ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\sessions\(sessionId)\assessments:salesforce-data-api-config">
+        <ee:transform>
+            <ee:variables>
+                <ee:set-variable variableName="sessionId">attributes.uriParams.'sessionId'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <ee:transform>
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+                    output application/json
+                    ---
+                    { message: "bad request" }]]>
+                </ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\assessment\(studentId):salesforce-data-api-config">
+        <ee:transform>
+            <ee:variables>
+                <ee:set-variable variableName="studentId">attributes.uriParams.'studentId'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <ee:transform>
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+                    output application/json
+                    ---
+                    { message: "Error retrieving enrollments"
+                    }]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="patch:\assessments\(studentId)\(assessmentId):application\json:salesforce-data-api-config">
+        <ee:transform>
+            <ee:variables>
+                <ee:set-variable variableName="studentId">attributes.uriParams.'studentId'</ee:set-variable>
+                <ee:set-variable variableName="assessmentId">attributes.uriParams.'assessmentId'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <ee:transform>
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+                    output application/json
+                    ---
+                    {
+                    message: "Assessment updated"
+                    }]]>
+                </ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\assessments\(studentId):salesforce-data-api-config">
+        <ee:transform>
+            <ee:variables>
+                <ee:set-variable variableName="studentId">attributes.uriParams.'studentId'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <ee:transform>
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+                    output application/json
+                    ---
+                    {
+                    message: "Error retrieving enrollments"
+                    }]]>
+                </ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="get:\useraccount:salesforce-data-api-config">
+        <logger level="INFO" message="get:\useraccount:salesforce-data-api-config" />
+    </flow>
+    <flow name="post:\sessions\(sessionId)\assessment:application\json:salesforce-data-api-config">
+        <ee:transform>
+            <ee:variables>
+                <ee:set-variable variableName="sessionId">attributes.uriParams.'sessionId'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <ee:transform>
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+                    output application/json
+                    ---
+                    {
+                    message: "assessment created"
+                    }]]>
+                </ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+</mule>

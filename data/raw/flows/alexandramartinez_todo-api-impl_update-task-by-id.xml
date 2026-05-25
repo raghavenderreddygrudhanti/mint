@@ -1,0 +1,20 @@
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+	http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+	http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+    <sub-flow name="update-task-by-id-subflow">
+        <logger doc:name="START" doc:id="mfiixv" message="Start - Update task by ID"/>
+        <flow-ref name="global:get-task-by-id-subflow" target="beforeUpdate"/>
+        <ee:transform doc:name="task input" doc:id="kfovgo" >
+            <ee:message >
+                <ee:set-payload doc:name="Set payload" doc:id="rmeygk" resource="dw/create-task-input.dwl"/>
+            </ee:message>    
+        </ee:transform>
+        <db:update doc:name="Update task by ID" doc:id="gxubge" config-ref="Mysql_Database_Config">
+            <db:sql><![CDATA[UPDATE tasks SET title = :title, description = :description, dueDate = :dueDate, completed = :completed WHERE id = :id]]></db:sql>
+            <db:input-parameters><![CDATA[#[payload]]]></db:input-parameters>                
+        </db:update>
+        <flow-ref name="global:get-task-by-id-subflow"/>
+        <logger doc:name="END" doc:id="iytgxn" message="End - Update task by ID"/></sub-flow>
+</mule>

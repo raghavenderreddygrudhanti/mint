@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
+	  xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	  xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
+	  xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
+	  xmlns="http://www.mulesoft.org/schema/mule/core"
+	  xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd">
+
+
+	<configuration defaultErrorHandler-ref="global-error-handler"/>
+
+    <!-- This Property is to use in various properties and Custom Logger to reference the environment (e.g. local, dev, etc) -->
+	<global-property doc:name="Global Property" doc:id="dfaec442-840f-4591-b222-701bfff6c54c" name="env" value="local" />
+	
+	<!-- This property's real value must be set at environment level, not here. -->
+	<global-property doc:name="Global Property" doc:id="966da4dd-570c-4921-b005-e9d11b4defca" name="crypto.key" value="ThisIsADummyValue" />
+	
+	<!-- Properties loaded using secure-properties:config in Mule 4.x now can 
+		only be addressed by adding a secure:: prefix to them. Since that is verbose 
+		and could limit portability (by requiring tests to know secure vs. not secure). 
+		We have both properties processors process the same files. That way non secure 
+		properties can be accessed the usual way and you only have to use secure:: 
+		for encrypted properties. -->
+	<configuration-properties
+		file="properties/${env}.api.properties" />
+	<configuration-properties
+		file="properties/common.api.properties" />
+	<configuration-properties
+		file="properties/project-app.properties" />
+	
+	<secure-properties:config
+		name="Secure_Properties_Config_Env"
+		doc:name="Secure Properties Config"
+		doc:id="874e18fe-fefc-465e-a670-5dd470fdc937"
+		file="properties/${env}.api.properties" key="${crypto.key}" />
+	<secure-properties:config
+		name="Secure_Properties_Config_Common"
+		doc:name="Secure Properties Config"
+		doc:id="e14e49b3-87a2-4ae0-b3b0-c506039e90c3"
+		file="properties/common.api.properties" key="${crypto.key}" />
+
+	<!-- api-gateway:autodiscovery apiId="${auto-discovery.api-id}"
+							   flowRef="MAIN_API_FLOW_NAME"
+							   doc:name="API Autodiscovery"/>
+	<http:listener-config name="cloudhub-https-listener"
+						  doc:name="CloudHub Worker Listener">
+		<http:listener-connection host="0.0.0.0"
+								  protocol="HTTPS"
+								  port="HTTPS_PORT_PLACE">
+			<tls:context>
+				<tls:key-store type="jks"
+							   path="keystores/listener_keystore_${env}.jks"
+							   alias="selfsigned"
+							   keyPassword="${secure::listener.keystore.password}"
+							   password="${secure::listener.keystore.password}"/>
+			</tls:context>
+		</http:listener-connection>
+	</http:listener-config-->
+	<error-handler name="globalErrorHandler" doc:id="5c2b1342-2977-46c1-9164-02f826bf3b19" >
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="dc0d20c9-e07a-45ca-b692-f1ccae378110" type="ANY">
+			<logger level="INFO" doc:name="Logger" doc:id="05db1446-648c-4bd7-9b19-7bdbee69b4ac" message="Error"/>
+		</on-error-propagate>
+	</error-handler>
+</mule>
