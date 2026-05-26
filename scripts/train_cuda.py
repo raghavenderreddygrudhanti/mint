@@ -10,7 +10,7 @@ from datasets import Dataset
 from huggingface_hub import HfApi
 
 # Load data
-data = [json.loads(l) for l in open("data/training.jsonl")]
+data = [json.loads(l) for l in open("data/dataset_train.jsonl")]
 formatted = [{"messages": [{"role":"system","content":"You are MINT, an expert MuleSoft developer. Generate complete, valid Mule 4 XML flows and DataWeave transformations."},{"role":"user","content":ex["instruction"]},{"role":"assistant","content":ex["output"]}]} for ex in data]
 dataset = Dataset.from_list(formatted)
 print(f"Loaded {len(dataset)} examples")
