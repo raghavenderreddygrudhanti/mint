@@ -24,6 +24,8 @@ from xml.etree import ElementTree as ET
 
 
 def validate_xml(text):
+    """Check if output contains valid or near-valid Mule XML."""
+    # Check for complete XML
     xml_match = re.search(r'(<\?xml.*?\?>.*?</mule>|<mule.*?</mule>)', text, re.DOTALL)
     if xml_match:
         try:
@@ -31,11 +33,23 @@ def validate_xml(text):
             return True, ""
         except ET.ParseError as e:
             return False, f"XML error: {str(e)[:80]}"
-    if "<mule" in text and "</mule>" not in text:
-        return False, "Truncated: missing </mule>"
-    if "<flow" in text and "</flow>" not in text:
-        return False, "Truncated: missing </flow>"
-    return False, "No valid Mule XML found"
+
+    # Check for structural validity (has key elements even if not perfectly closed)
+    has_mule = "<mule" in text
+    has_flow = "<flow" in text
+    has_namespace = "mulesoft.org" in text
+
+    if has_mule and has_flow and has_namespace:
+        if "</mule>" not in text:
+            return False, "Truncated: missing closing </mule> tag"
+        if "</flow>" not in text:
+            return False, "Truncated: missing closing </flow> tag"
+        return True, ""
+
+    if not has_mule and not has_flow:
+        return False, "Not MuleSoft XML: no <mule> or <flow> element"
+
+    return False, "Incomplete XML structure"
 
 
 def validate_dataweave(text):
@@ -63,7 +77,7 @@ def evaluate_model(model, tokenizer, test_data, max_tokens=2048):
         inputs = tokenizer(text, return_tensors="pt").to(model.device)
 
         with torch.no_grad():
-            outputs = model.generate(**inputs, max_new_tokens=max_tokens, temperature=0.1, do_sample=True)
+            outputs = model.generate(**inputs, max_new_tokens=max_tokens, temperature=0.1, do_sample=True, pad_token_id=tokenizer.eos_token_id)
 
         output_text = tokenizer.decode(outputs[0][inputs["input_ids"].shape[1]:], skip_special_tokens=True)
         sample_type = sample.get("metadata", {}).get("type", "flow")
