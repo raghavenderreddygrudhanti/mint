@@ -1,0 +1,15 @@
+{
+  "total_raw": 2727,
+  "after_validation": 2727,
+  "after_dedup": 2216,
+  "train": 1772,
+  "test": 444,
+  "by_type": {
+    "flow": 480,
+    "dataweave": 1736
+  },
+  "by_source": {
+    "local": 1533,
+    "github": 683
+  }
+}
