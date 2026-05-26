@@ -1,0 +1,120 @@
+{
+  "overall_accuracy": 81.0,
+  "n_samples": 10,
+  "flow_accuracy": 36.7,
+  "dataweave_accuracy": 100.0,
+  "details": [
+    {
+      "type": "dataweave",
+      "instruction_length": 103,
+      "output_length": 473,
+      "dw_valid": true,
+      "has_output": true,
+      "score": 1.0
+    },
+    {
+      "type": "dataweave",
+      "instruction_length": 95,
+      "output_length": 1155,
+      "dw_valid": true,
+      "has_output": true,
+      "score": 1.0
+    },
+    {
+      "type": "flow",
+      "instruction_length": 98,
+      "output_length": 1360,
+      "xml_valid": false,
+      "has_flow": true,
+      "has_namespace": true,
+      "connectors": {
+        "expected": [
+          "database",
+          "dataweave"
+        ],
+        "found": [],
+        "correct": 0,
+        "total": 2
+      },
+      "score": 0.4
+    },
+    {
+      "type": "dataweave",
+      "instruction_length": 54,
+      "output_length": 374,
+      "dw_valid": true,
+      "has_output": true,
+      "score": 1.0
+    },
+    {
+      "type": "dataweave",
+      "instruction_length": 124,
+      "output_length": 327,
+      "dw_valid": true,
+      "has_output": true,
+      "score": 1.0
+    },
+    {
+      "type": "flow",
+      "instruction_length": 243,
+      "output_length": 2599,
+      "xml_valid": false,
+      "has_flow": false,
+      "has_namespace": false,
+      "connectors": {
+        "expected": [
+          "salesforce",
+          "http",
+          "dataweave"
+        ],
+        "found": [],
+        "correct": 0,
+        "total": 3
+      },
+      "score": 0.0
+    },
+    {
+      "type": "flow",
+      "instruction_length": 73,
+      "output_length": 1278,
+      "xml_valid": false,
+      "has_flow": true,
+      "has_namespace": true,
+      "connectors": {
+        "expected": [
+          "dataweave"
+        ],
+        "found": [
+          "dataweave"
+        ],
+        "correct": 1,
+        "total": 1
+      },
+      "score": 0.7
+    },
+    {
+      "type": "dataweave",
+      "instruction_length": 85,
+      "output_length": 532,
+      "dw_valid": true,
+      "has_output": true,
+      "score": 1.0
+    },
+    {
+      "type": "dataweave",
+      "instruction_length": 64,
+      "output_length": 728,
+      "dw_valid": true,
+      "has_output": true,
+      "score": 1.0
+    },
+    {
+      "type": "dataweave",
+      "instruction_length": 69,
+      "output_length": 96,
+      "dw_valid": true,
+      "has_output": true,
+      "score": 1.0
+    }
+  ]
+}
