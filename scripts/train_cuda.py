@@ -1,13 +1,8 @@
 import json, os
 
-# HuggingFace token for model upload
-HF_TOKEN = os.environ.get("HF_TOKEN", "")
-HF_REPO = "raghavenderreddygrudhanti/mint-lora"
-
 from unsloth import FastLanguageModel
 from trl import SFTTrainer, SFTConfig
 from datasets import Dataset
-from huggingface_hub import HfApi
 
 # Load data
 data = [json.loads(l) for l in open("data/dataset_train.jsonl")]
@@ -43,17 +38,12 @@ trainer = SFTTrainer(
         optim="adamw_8bit",
         report_to="none",
         dataset_text_field="text",
-        push_to_hub=True,
-        hub_model_id=HF_REPO,
-        hub_token=HF_TOKEN,
-        hub_strategy="every_save",
     ),
 )
 
 trainer.train()
 
-# Final save + push
+# Final save
 model.save_pretrained("models/mint-lora")
 tokenizer.save_pretrained("models/mint-lora")
-trainer.push_to_hub()
-print(f"Training complete! Model pushed to https://huggingface.co/{HF_REPO}")
+print("Training complete! Model saved to models/mint-lora")
