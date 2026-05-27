@@ -22,15 +22,32 @@ st.caption("AI-powered MuleSoft code generation. Ask anything about Mule 4 flows
 
 @st.cache_resource
 def load_model():
-    tokenizer = AutoTokenizer.from_pretrained(LORA_MODEL)
-    model = AutoModelForCausalLM.from_pretrained(
-        BASE_MODEL,
-        torch_dtype=torch.float16,
-        device_map="auto",
-    )
-    model = PeftModel.from_pretrained(model, LORA_MODEL)
-    model.eval()
-    return model, tokenizer
+    import platform
+    # Use CPU on Mac, GPU elsewhere
+    if platform.system() == "Darwin" or not torch.cuda.is_available():
+        tokenizer = AutoTokenizer.from_pretrained(LORA_MODEL)
+        model = AutoModelForCausalLM.from_pretrained(
+            "Qwen/Qwen2.5-Coder-1.5B-Instruct",
+            torch_dtype=torch.float32,
+            device_map="cpu",
+        )
+        # Try loading LoRA — may fail on CPU with 4-bit base mismatch
+        try:
+            model = PeftModel.from_pretrained(model, LORA_MODEL)
+        except Exception:
+            pass  # Run base model without LoRA on Mac
+        model.eval()
+        return model, tokenizer
+    else:
+        tokenizer = AutoTokenizer.from_pretrained(LORA_MODEL)
+        model = AutoModelForCausalLM.from_pretrained(
+            BASE_MODEL,
+            torch_dtype=torch.float16,
+            device_map="auto",
+        )
+        model = PeftModel.from_pretrained(model, LORA_MODEL)
+        model.eval()
+        return model, tokenizer
 
 
 @st.cache_resource
