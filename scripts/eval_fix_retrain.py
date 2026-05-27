@@ -336,7 +336,7 @@ def main():
     avg_score = np.mean([r["score"] for r in results]) * 100
     print(f"\n  Round 1 score: {avg_score:.1f}%")
 
-    if avg_score >= 85:
+    if avg_score >= 95:
         print("  🎯 Score is good enough! No fix round needed.")
         return
 
