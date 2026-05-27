@@ -79,8 +79,11 @@ else:
 # ============================================================
 echo ""
 echo "🔐 [5/8] HuggingFace CLI login..."
-huggingface-cli login --token "$HF_TOKEN" --add-to-git-credential 2>/dev/null
-echo "  ✓ CLI authenticated"
+python -c "
+from huggingface_hub import login
+login(token='$HF_TOKEN', add_to_git_credential=True)
+print('  ✓ CLI authenticated')
+"
 
 # ============================================================
 # STEP 5: Verify LoRA works
